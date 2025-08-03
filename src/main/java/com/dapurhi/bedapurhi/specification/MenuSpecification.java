@@ -8,22 +8,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MenuSpecification {
-    public static Specification<Menu> getMenuSpecification(Boolean isMainMenu) {
-        return ((root, query, criteriaBuilder) -> {
+    public static Specification<Menu> getMenuSpecification(String name, Boolean isMainMenu, Boolean isActive) {
+        return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            predicates.add(criteriaBuilder.isTrue(root.get("isActive")));
-
-            if (isMainMenu) {
-                predicates.add(criteriaBuilder.equal(root.get("isMainMenu"), true));
-            } else {
-                predicates.add(criteriaBuilder.equal(root.get("isMainMenu"), false));
+            if (name != null && !name.isEmpty()) {
+                predicates.add(criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("name")),
+                        "%" + name.toLowerCase() + "%")
+                );
             }
 
+            if (isActive != null) {
+                predicates.add(criteriaBuilder.equal(root.get("isActive"), isActive));
+            }
 
-            query.groupBy(root.get("id"));
+            if (isMainMenu != null) {
+                predicates.add(criteriaBuilder.equal(root.get("isMainMenu"), isMainMenu));
+            }
 
-            return query.where(predicates.toArray(new Predicate[0])).getRestriction();
-        });
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
     }
 }

@@ -1,9 +1,11 @@
 package com.dapurhi.bedapurhi.service.impl;
 
+import com.dapurhi.bedapurhi.dto.request.MenuRequest;
 import com.dapurhi.bedapurhi.dto.response.MenuResponse;
 import com.dapurhi.bedapurhi.entity.Menu;
 import com.dapurhi.bedapurhi.mapper.MenuMapper;
 import com.dapurhi.bedapurhi.repository.MenuRepository;
+import com.dapurhi.bedapurhi.service.CloudinaryService;
 import com.dapurhi.bedapurhi.service.MenuService;
 import com.dapurhi.bedapurhi.specification.MenuSpecification;
 import jakarta.persistence.EntityNotFoundException;
@@ -12,17 +14,43 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
 public class MenuServiceImpl implements MenuService {
 
     private final MenuRepository menuRepository;
+    private final CloudinaryService cloudinaryService;
 
     @Override
-    public Page<MenuResponse> getAllMenu(Pageable pageable, Boolean isMainMenu) {
+    @Transactional(rollbackFor = Exception.class)
+    public MenuResponse createMenu(MenuRequest request, MultipartFile image) {
+        String imageUrl = null;
+        if (image != null && !image.isEmpty()) {
+            imageUrl = cloudinaryService.uploadFile(image);
+        }
+
+        Menu menu = Menu.builder()
+                .name(request.getName())
+                .description(request.getDescription())
+                .price(request.getPrice())
+                .isMainMenu(request.getIsMainMenu())
+                .imageUrl(imageUrl)
+                .isActive(true)
+                .build();
+
+        menuRepository.save(menu);
+        return MenuMapper.toMenuResponse(menu);
+    }
+
+    @Override
+    public Page<MenuResponse> getAllMenu(Pageable pageable, String name, Boolean isMainMenu, Boolean isActive) {
         Specification<Menu> spec = MenuSpecification.getMenuSpecification(
-                isMainMenu
+                name,
+                isMainMenu,
+                isActive
         );
 
         Page<Menu> menuPage = menuRepository.findAll(spec, pageable);
