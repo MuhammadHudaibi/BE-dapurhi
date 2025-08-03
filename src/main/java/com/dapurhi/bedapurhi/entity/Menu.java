@@ -23,4 +23,7 @@ public class Menu {
     private Long price;
     private Boolean isMainMenu = false;
     private Boolean isActive = true;
+
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
 }

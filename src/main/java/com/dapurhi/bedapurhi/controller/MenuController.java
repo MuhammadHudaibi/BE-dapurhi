@@ -69,4 +69,40 @@ public class MenuController {
                 menuService.getMenuById(id)
         );
     }
+
+    @PutMapping(value = "/{id}", consumes =  MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CommonResponse<MenuResponse>> updateMenu(
+            @PathVariable String id,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) Long price,
+            @RequestParam(required = false) Boolean isMainMenu,
+            @RequestPart(required = false) MultipartFile image
+    ){
+        MenuRequest request = new MenuRequest(name, description, price, isMainMenu);
+        return ResponseUtil.createResponse(
+                HttpStatus.OK,
+                "Berhasil memperbaharui menu.",
+                menuService.updateMenu(id, request, image)
+        );
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<CommonResponse<MenuResponse>> updateStatusMenu(@PathVariable String id){
+        return ResponseUtil.createResponse(
+                HttpStatus.OK,
+                "Status menu berhasil diubah",
+                menuService.updateStatus(id)
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CommonResponse<String>> deleteMenuById(@PathVariable String id){
+        menuService.deleteMenuById(id);
+        return ResponseUtil.createResponse(
+                HttpStatus.NO_CONTENT,
+                "Berhasil menghapus menu",
+                (String) null
+        );
+    }
 }

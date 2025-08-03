@@ -16,4 +16,6 @@ public class MenuResponse {
     private String imageUrl;
     private Long price;
     private Boolean isMainMenu;
+    private Boolean isActive;
+    private Boolean isDeleted;
 }

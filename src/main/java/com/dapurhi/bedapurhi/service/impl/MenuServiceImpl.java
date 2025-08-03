@@ -39,6 +39,7 @@ public class MenuServiceImpl implements MenuService {
                 .isMainMenu(request.getIsMainMenu())
                 .imageUrl(imageUrl)
                 .isActive(true)
+                .isDeleted(false)
                 .build();
 
         menuRepository.save(menu);
@@ -59,9 +60,52 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public MenuResponse getMenuById(String id) {
-        Menu menu = menuRepository.findById(id).orElseThrow(
+        Menu menu = getMenuByIdForInternal(id);
+        return MenuMapper.toMenuResponse(menu);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public MenuResponse updateMenu(String id, MenuRequest request, MultipartFile image) {
+        Menu menu = getMenuByIdForInternal(id);
+
+        String imageUrl;
+
+        if (image != null && !image.isEmpty()) {
+            imageUrl = cloudinaryService.uploadFile(image);
+            menu.setImageUrl(imageUrl);
+        }
+
+        menu.setName(request.getName());
+        menu.setDescription(request.getDescription());
+        menu.setPrice(request.getPrice());
+        menu.setIsMainMenu(request.getIsMainMenu());
+        menuRepository.save(menu);
+
+        return MenuMapper.toMenuResponse(menu);
+    }
+
+    @Override
+    public MenuResponse updateStatus(String id) {
+        Menu menu = getMenuByIdForInternal(id);
+
+        menu.setIsActive(!menu.getIsActive());
+        menuRepository.save(menu);
+
+        return MenuMapper.toMenuResponse(menu);
+    }
+
+    @Override
+    public void deleteMenuById(String id) {
+        Menu menu = getMenuByIdForInternal(id);
+        menu.setIsDeleted(true);
+        menuRepository.save(menu);
+    }
+
+    @Override
+    public Menu getMenuByIdForInternal(String id) {
+        return menuRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Menu with id " + id + " not found")
         );
-        return MenuMapper.toMenuResponse(menu);
     }
 }

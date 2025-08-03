@@ -6,5 +6,6 @@ CREATE TABLE menus
     image_url     VARCHAR(255),
     price         BIGINT       NOT NULL,
     is_main_menu  BOOLEAN DEFAULT FALSE,
-    is_active     BOOLEAN DEFAULT TRUE
+    is_active     BOOLEAN DEFAULT TRUE,
+    is_deleted    BOOLEAN DEFAULT FALSE
 );

@@ -12,6 +12,8 @@ public class MenuMapper {
                 .imageUrl(menu.getImageUrl())
                 .price(menu.getPrice())
                 .isMainMenu(menu.getIsMainMenu())
+                .isActive(menu.getIsActive())
+                .isDeleted(menu.getIsDeleted())
                 .build();
     }
 }
