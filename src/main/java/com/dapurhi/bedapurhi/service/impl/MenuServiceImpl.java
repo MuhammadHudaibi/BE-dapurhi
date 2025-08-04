@@ -3,6 +3,7 @@ package com.dapurhi.bedapurhi.service.impl;
 import com.dapurhi.bedapurhi.dto.request.MenuRequest;
 import com.dapurhi.bedapurhi.dto.response.MenuResponse;
 import com.dapurhi.bedapurhi.entity.Menu;
+import com.dapurhi.bedapurhi.exception.ResourceNotFoundException;
 import com.dapurhi.bedapurhi.mapper.MenuMapper;
 import com.dapurhi.bedapurhi.repository.MenuRepository;
 import com.dapurhi.bedapurhi.service.CloudinaryService;
@@ -78,10 +79,22 @@ public class MenuServiceImpl implements MenuService {
             menu.setImageUrl(imageUrl);
         }
 
-        menu.setName(request.getName());
-        menu.setDescription(request.getDescription());
-        menu.setPrice(request.getPrice());
-        menu.setIsMainMenu(request.getIsMainMenu());
+        if (request.getName() != null) {
+            menu.setName(request.getName());
+        }
+
+        if (request.getDescription() != null) {
+            menu.setDescription(request.getDescription());
+        }
+
+        if (request.getPrice() != null) {
+            menu.setPrice(request.getPrice());
+        }
+
+        if (request.getIsMainMenu() != null) {
+            menu.setIsMainMenu(request.getIsMainMenu());
+        }
+
         menuRepository.save(menu);
 
         return MenuMapper.toMenuResponse(menu);
@@ -108,7 +121,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public Menu getMenuByIdForInternal(String id) {
         return menuRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Menu dengan id " + id + " tidak ditemukan.")
+                () -> new ResourceNotFoundException("Menu dengan id " + id + " tidak ditemukan.")
         );
     }
 }

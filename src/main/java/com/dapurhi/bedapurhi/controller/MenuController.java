@@ -5,6 +5,7 @@ import com.dapurhi.bedapurhi.dto.response.CommonResponse;
 import com.dapurhi.bedapurhi.dto.response.MenuResponse;
 import com.dapurhi.bedapurhi.service.MenuService;
 import com.dapurhi.bedapurhi.util.ResponseUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,17 +28,13 @@ public class MenuController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CommonResponse<MenuResponse>> createMenu(
-            @RequestParam("name") String name,
-            @RequestParam(name = "description", required = false) String description,
-            @RequestParam("price") Long price,
-            @RequestParam("isMainMenu") Boolean isMainMenu,
+            @Valid @ModelAttribute MenuRequest menuRequest,
             @RequestPart(value = "image", required = false) MultipartFile image
     ) {
-        MenuRequest request = new MenuRequest(name, description, price, isMainMenu);
         return ResponseUtil.createResponse(
                 HttpStatus.CREATED,
                 "Menu berhasil dibuat",
-                menuService.createMenu(request,image)
+                menuService.createMenu(menuRequest, image)
         );
     }
 
@@ -73,17 +70,13 @@ public class MenuController {
     @PutMapping(value = "/{id}", consumes =  MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CommonResponse<MenuResponse>> updateMenu(
             @PathVariable String id,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String description,
-            @RequestParam(required = false) Long price,
-            @RequestParam(required = false) Boolean isMainMenu,
+            @Valid @ModelAttribute MenuRequest menuRequest,
             @RequestPart(required = false) MultipartFile image
     ){
-        MenuRequest request = new MenuRequest(name, description, price, isMainMenu);
         return ResponseUtil.createResponse(
                 HttpStatus.OK,
                 "Berhasil memperbaharui menu.",
-                menuService.updateMenu(id, request, image)
+                menuService.updateMenu(id, menuRequest, image)
         );
     }
 

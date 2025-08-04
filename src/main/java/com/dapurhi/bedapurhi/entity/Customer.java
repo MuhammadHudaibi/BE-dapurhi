@@ -28,6 +28,9 @@ public class Customer {
     @Column(columnDefinition = "TEXT")
     private String address;
 
+    @Builder.Default
+    private Boolean isDeleted = false;
+
     private LocalDateTime createdAt;
 
     @PrePersist

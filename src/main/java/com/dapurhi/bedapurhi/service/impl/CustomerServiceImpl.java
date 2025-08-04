@@ -3,11 +3,16 @@ package com.dapurhi.bedapurhi.service.impl;
 import com.dapurhi.bedapurhi.dto.request.CustomerRequest;
 import com.dapurhi.bedapurhi.dto.response.CustomerResponse;
 import com.dapurhi.bedapurhi.entity.Customer;
+import com.dapurhi.bedapurhi.entity.Menu;
 import com.dapurhi.bedapurhi.mapper.CustomerMapper;
 import com.dapurhi.bedapurhi.repository.CustomerRepository;
 import com.dapurhi.bedapurhi.service.CustomerService;
+import com.dapurhi.bedapurhi.specification.CustomerSpecification;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,11 +38,13 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerResponse> getAllCustomers() {
-        List<Customer> customers = customerRepository.findAll();
-        return customers.stream()
-                .map(CustomerMapper::toCustomerResponse)
-                .collect(Collectors.toList());
+    public Page<CustomerResponse> getAllCustomers(Pageable page, String name) {
+        Specification<Customer> spec =CustomerSpecification.getMenuSpecification(
+                name
+        );
+
+        Page<Customer> customers = customerRepository.findAll(spec, page);
+        return customers.map(CustomerMapper::toCustomerResponse);
     }
 
     @Override

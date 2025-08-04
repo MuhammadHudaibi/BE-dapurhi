@@ -2,23 +2,19 @@ package com.dapurhi.bedapurhi.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 public class CustomerRequest {
-    @NotBlank(message = "Nama tidak boleh kosong.")
+
+    @NotBlank(message = "Nama pelanggan wajib diisi.")
     private String name;
 
-    @NotBlank(message = "Nomor HP tidak boleh kosong.")
+    @NotBlank(message = "Nomor HP pelanggan wajib diisi.")
     private String phoneNumber;
 
-    @Size(min = 1, max = 240, message = "Alamat harus diisi dan maksimal 240 karakter.")
-    @NotBlank(message = "Alamat tidak boleh kosong.")
+    @NotBlank(message = "Alamat pelanggan wajib diisi.")
+    @Size(max = 240, message = "Alamat pelanggan tidak boleh lebih dari 240 karakter.")
     private String address;
 }
