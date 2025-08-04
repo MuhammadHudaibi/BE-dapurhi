@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class MenuServiceImpl implements MenuService {
@@ -99,13 +101,14 @@ public class MenuServiceImpl implements MenuService {
     public void deleteMenuById(String id) {
         Menu menu = getMenuByIdForInternal(id);
         menu.setIsDeleted(true);
+        menu.setDeletedAt(LocalDateTime.now());
         menuRepository.save(menu);
     }
 
     @Override
     public Menu getMenuByIdForInternal(String id) {
         return menuRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Menu with id " + id + " not found")
+                () -> new EntityNotFoundException("Menu dengan id " + id + " tidak ditemukan.")
         );
     }
 }

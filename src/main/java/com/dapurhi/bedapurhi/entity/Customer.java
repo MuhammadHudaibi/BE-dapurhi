@@ -1,36 +1,34 @@
 package com.dapurhi.bedapurhi.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "menus")
+@Table(name = "customers")
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class Menu {
+@AllArgsConstructor
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column(nullable = false)
     private String name;
-    private String description;
-    private String imageUrl;
 
     @Column(nullable = false)
-    private Long price;
-    private Boolean isMainMenu = false;
-    private Boolean isActive = true;
+    private String phoneNumber;
 
-    @Column(name = "is_deleted", nullable = false)
-    private Boolean isDeleted = false;
+    @Column(columnDefinition = "TEXT")
+    private String address;
 
     private LocalDateTime createdAt;
-    private LocalDateTime deletedAt;
 
     @PrePersist
     public void prePersist() {
