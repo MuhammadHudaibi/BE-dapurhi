@@ -46,8 +46,38 @@ public class CustomerController {
         Page<CustomerResponse> customerResponses = customerService.getAllCustomers(pageable, name);
         return ResponseUtil.createResponse(
                 HttpStatus.OK,
-                "Daftar customer didapatkan",
+                "Daftar customer didapatkan.",
                 customerResponses
+        );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CommonResponse<CustomerResponse>> getCustomerById(@PathVariable String id){
+        return ResponseUtil.createResponse(
+                HttpStatus.OK,
+                "Berhasil mendapatkan customer.",
+                customerService.getCustomerById(id)
+        );
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CommonResponse<CustomerResponse>> updateCustomer(
+            @PathVariable String id,
+            @RequestBody CustomerRequest customerRequest
+    ){
+        return ResponseUtil.createResponse(
+                HttpStatus.OK,
+                "Berhasil memperbaharui Customer.",
+                customerService.updateCustomer(id, customerRequest)
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CommonResponse<String>> deleteCustomer(@PathVariable String id){
+        return ResponseUtil.createResponse(
+                HttpStatus.NO_CONTENT,
+                "Berhasil menghapus Customer.",
+                (String) null
         );
     }
 }

@@ -11,5 +11,8 @@ import java.util.List;
 public interface CustomerService {
     CustomerResponse createCustomer(CustomerRequest customerRequest);
     Page<CustomerResponse> getAllCustomers(Pageable pageable, String name);
+    CustomerResponse getCustomerById(String id);
+    CustomerResponse updateCustomer(String id, CustomerRequest customerRequest);
+    void deleteCustomerById(String id);
     Customer getCustomerByIdForInternal(String id);
 }
