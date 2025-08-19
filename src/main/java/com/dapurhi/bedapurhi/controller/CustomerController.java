@@ -104,7 +104,6 @@ public class CustomerController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<CommonResponse<String>> deleteCustomer(@PathVariable String id){
-        // CATATAN PENTING: Menambahkan pemanggilan service yang sebelumnya tidak ada
         customerService.deleteCustomerById(id);
         return ResponseUtil.createResponse(
                 HttpStatus.NO_CONTENT,
