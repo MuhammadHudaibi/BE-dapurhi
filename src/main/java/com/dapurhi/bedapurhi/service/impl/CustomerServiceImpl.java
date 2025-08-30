@@ -57,11 +57,11 @@ public class CustomerServiceImpl implements CustomerService {
             customer.setName(customerRequest.getName());
         }
 
-        if (customer.getPhoneNumber() != null) {
+        if (customerRequest.getPhoneNumber() != null) {
             customer.setPhoneNumber(customer.getPhoneNumber());
         }
 
-        if (customer.getAddress() != null) {
+        if (customerRequest.getAddress() != null) {
             customer.setAddress(customer.getAddress());
         }
 

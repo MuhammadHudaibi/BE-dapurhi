@@ -6,11 +6,13 @@ import com.dapurhi.bedapurhi.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class AdminInitializer {
 
     private final UserRepository userRepository;
@@ -32,7 +34,7 @@ public class AdminInitializer {
 
             userRepository.save(adminUser);
 
-            System.out.println("User admin berhasil dibuat email: " + adminUser.getUsername() + " Password: hudahuda");
+            log.info("Admin user created successfully. Username: {}, Password: hudahuda", adminUser.getUsername());
         }
 
     }
