@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "customers")
@@ -30,6 +31,9 @@ public class Customer {
     private Boolean isDeleted = false;
 
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Order> orders;
 
     @PrePersist
     public void prePersist() {
