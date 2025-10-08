@@ -1,7 +1,0 @@
-feat: add order functionality
-
-- Add Order and OrderItem entities
-- Add OrderStatus and PaymentMethod enums
-- Add OrderRepository and OrderItemRepository
-- Update Customer and Menu entities with order relationships
-- Update CustomerService

@@ -8,7 +8,6 @@ import com.dapurhi.bedapurhi.mapper.CustomerMapper;
 import com.dapurhi.bedapurhi.repository.CustomerRepository;
 import com.dapurhi.bedapurhi.service.CustomerService;
 import com.dapurhi.bedapurhi.specification.CustomerSpecification;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

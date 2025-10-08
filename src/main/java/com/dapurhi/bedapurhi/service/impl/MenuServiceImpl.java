@@ -9,7 +9,6 @@ import com.dapurhi.bedapurhi.repository.MenuRepository;
 import com.dapurhi.bedapurhi.service.CloudinaryService;
 import com.dapurhi.bedapurhi.service.MenuService;
 import com.dapurhi.bedapurhi.specification.MenuSpecification;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
